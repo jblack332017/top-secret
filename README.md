@@ -8,6 +8,7 @@ Clone the top_secret gem:
 
 And then execute:
 
+    $ cd top-secret 
     $ gem install bundler
     $ bundle install
     $ gem build top_secret.gemspec
@@ -25,8 +26,11 @@ Then to run tests:
 ## Usage
 
 The TopSecret gem has one module with one functional method. The method TopSecret::Scrape.positive method accepts three arguments: 
+    
     1. DealerRater url in "http://www.dealerrater.com/dealer/<dealer>/page1/?filter=ALL_REVIEWS
+    
     2. Number of pages to scrape
+    
     3. Number of most postive reviews to return
     
 The challenge.rb script will run the TopSecret gem under the conditions required for the podium challenge.
