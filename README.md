@@ -16,7 +16,7 @@ Then to run the application:
     $ ruby challenge.rb
     
 To run tests:
-    $ rake
+    ```$ rake```
     
 
 
