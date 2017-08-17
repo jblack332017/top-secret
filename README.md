@@ -15,11 +15,11 @@ Then to run the application:
 
     $ ruby challenge.rb
     
-To run tests:
-    ```$ rake```
     
+Then to run tests:
 
-
+    $ rake spec
+    
 ## Usage
 
 The TopSecret gem has one module with one functional method. The method TopSecret::Scrape.positive method accepts three arguments: 
@@ -29,5 +29,7 @@ The TopSecret gem has one module with one functional method. The method TopSecre
     
 The challenge.rb script will run the TopSecret gem under the conditions required for the podium challenge.
 
-    The reviews are sorted based first on overall score and then by date.
+## Sorting
+
+The reviews are sorted based first on overall score and then by date.
 
