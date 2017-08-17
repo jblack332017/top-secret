@@ -1,0 +1,11 @@
+Metrics/LineLength:
+  Enabled: False
+
+Metric/BlockLength:
+  Enabled: False
+
+Metrics/MethodLength:
+  Enabled: False
+
+Documentation:
+  Enabled: False
