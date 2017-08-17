@@ -27,7 +27,7 @@ Then to run tests:
 
 The TopSecret gem has one module with one functional method. The method TopSecret::Scrape.positive method accepts three arguments: 
     
-    1. DealerRater url in "http://www.dealerrater.com/dealer/<dealer>/page1/?filter=ALL_REVIEWS
+    1. DealerRater url in "http://www.dealerrater.com/dealer/<dealer>/page1/?filter=ALL_REVIEWS" format
     
     2. Number of pages to scrape
     
