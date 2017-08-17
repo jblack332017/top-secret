@@ -1,5 +1,7 @@
 ## Installation
 
+I used ruby 2.4.1, gem 2.6.12, bundler 1.15.3.
+
 Clone the top_secret gem:
 
 ```$ git clone https://github.com/jblack332017/top-secret.git```
