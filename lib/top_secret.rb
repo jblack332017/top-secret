@@ -15,12 +15,12 @@ module TopSecret
         reviews.concat extract(url)
         counter += 1
       end
-      # sorts reviews based on the overall score and then the date.
-      sort(reviews,limit_to_return)
+      # sorts reviews based on teh overall score and then the date.
+      sort(reviews, limit_to_return)
     end
 
-    def self.sort(reviews,limit_to_return)
-      reviews.sort { |a, b| [a['overall'], Date.parse(a['date'])] <=> [b['overall'], Date.parse(b['date'])] }
+    def self.sort(reviews, limit_to_return)
+      reviews = reviews.sort { |a, b| [b['overall'], Date.parse(b['date'])] <=> [a['overall'], Date.parse(a['date'])] }
       reviews.first(limit_to_return)
     end
 
