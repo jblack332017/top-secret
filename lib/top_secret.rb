@@ -27,32 +27,24 @@ module TopSecret
     def self.extract(url)
       reviews = []
 
-      # use rest-client to get the page object
-      page = RestClient.get(url)
-
-      # convert the page object into a nokogiri object to be parsed. The review-wrapper css class is used to identify reviews.
-      noko_page = Nokogiri::HTML(page).css('.review-entry')
+      # convert the rest-client object object into a nokogiri object to be parsed. The review-wrapper css class is used to identify reviews.
+      noko_page = Nokogiri::HTML(RestClient.get(url)).css('.review-entry')
 
       # map through each user_review
       noko_page.map do |user_review|
         review_to_add = {}
 
         # the date and overall are located in an earlier div than the rest of the info locates in the review-wrapper container
-        date_and_overall = user_review.css('.review-date').css('div')
-        review_to_add['date'] = date_and_overall.css('.italic').text.strip
-        review_to_add['overall'] = rating(date_and_overall.css('.dealership-rating').css('div')[1])
+        add_date_overall(user_review,review_to_add)
 
         # the rest of the review
         review_wrapper = user_review.css('.review-wrapper').css('div')
 
         # title and name
-        review_title = review_wrapper[1]
-        review_to_add['title'] = review_title.css('h3').text.strip
-        review_to_add['name'] = review_title.css('span').text.strip
+        add_title_name(review_wrapper,review_to_add)
 
         # the main text of the review
-        review_body = review_wrapper[2]
-        review_to_add['body'] = review_body.css('p').text.strip
+        add_main_text(review_wrapper,review_to_add)
 
         # the specific ratings
         review_ratings = review_wrapper.css('.review-ratings-all').css('.table').css('.tr')
@@ -85,6 +77,23 @@ module TopSecret
 
       # return reviews
       reviews
+    end
+
+    def self.add_date_overall(user_review,review_to_add)
+      date_and_overall = user_review.css('.review-date').css('div')
+      review_to_add['date'] = date_and_overall.css('.italic').text.strip
+      review_to_add['overall'] = rating(date_and_overall.css('.dealership-rating').css('div')[1])
+    end
+
+    def self.add_title_name(review_wrapper,review_to_add)
+      review_title = review_wrapper[1]
+      review_to_add['title'] = review_title.css('h3').text.strip
+      review_to_add['name'] = review_title.css('span').text.strip
+    end
+
+    def self.add_main_text(review_wrapper,review_to_add)
+      review_body = review_wrapper[2]
+      review_to_add['body'] = review_body.css('p').text.strip
     end
 
     # returns correct rating based on class and text of elemnt passed in.
