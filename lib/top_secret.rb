@@ -35,42 +35,22 @@ module TopSecret
         review_to_add = {}
 
         # the date and overall are located in an earlier div than the rest of the info locates in the review-wrapper container
-        add_date_overall(user_review,review_to_add)
+        add_date_overall(user_review, review_to_add)
 
         # the rest of the review
         review_wrapper = user_review.css('.review-wrapper').css('div')
 
         # title and name
-        add_title_name(review_wrapper,review_to_add)
+        add_title_name(review_wrapper, review_to_add)
 
         # the main text of the review
-        add_main_text(review_wrapper,review_to_add)
-
-        # the specific ratings
-        review_ratings = review_wrapper.css('.review-ratings-all').css('.table').css('.tr')
+        add_main_text(review_wrapper, review_to_add)
 
         # map through specific review score and call rating to fetch correct score.
-        review_ratings.map do |specific_rating|
-          specific_score = rating(specific_rating.css('div')[1])
-          review_to_add[specific_rating.css('.bold').text] = specific_score
-        end
+        add_specific_ratings(review_wrapper, review_to_add)
 
-        # component containing employees
-        review_employees = review_wrapper.css('.employees-wrapper')
-
-        employees = []
-
-        # loops through and stores each employee name
-        review_employees.css('a').map do |employee|
-          employees.push(employee.text.strip)
-        end
-
-        review_to_add['employees'] = employees
-
-        # adds other employees if they exist
-        if (other_employees = review_employees.css('span').css('.italic').text.strip) && !other_employees.empty?
-          review_to_add['other_employees'] = other_employees
-        end
+        # add employees
+        add_employees(review_wrapper, review_to_add)
 
         reviews.push(review_to_add)
       end
@@ -79,21 +59,52 @@ module TopSecret
       reviews
     end
 
-    def self.add_date_overall(user_review,review_to_add)
+    def self.add_date_overall(user_review, review_to_add)
       date_and_overall = user_review.css('.review-date').css('div')
       review_to_add['date'] = date_and_overall.css('.italic').text.strip
       review_to_add['overall'] = rating(date_and_overall.css('.dealership-rating').css('div')[1])
     end
 
-    def self.add_title_name(review_wrapper,review_to_add)
+    def self.add_title_name(review_wrapper, review_to_add)
       review_title = review_wrapper[1]
       review_to_add['title'] = review_title.css('h3').text.strip
       review_to_add['name'] = review_title.css('span').text.strip
     end
 
-    def self.add_main_text(review_wrapper,review_to_add)
+    def self.add_main_text(review_wrapper, review_to_add)
       review_body = review_wrapper[2]
       review_to_add['body'] = review_body.css('p').text.strip
+    end
+
+    def self.add_specific_ratings(review_wrapper, review_to_add)
+      # the specific ratings
+      review_ratings = review_wrapper.css('.review-ratings-all').css('.table').css('.tr')
+
+      review_ratings.map do |specific_rating|
+        specific_score = rating(specific_rating.css('div')[1])
+        review_to_add[specific_rating.css('.bold').text] = specific_score
+      end
+    end
+
+    def self.add_employees(review_wrapper, review_to_add)
+      # component containing employees
+      review_employees = review_wrapper.css('.employees-wrapper')
+
+      employees = []
+
+      # loops through and stores each employee name
+      review_employees.css('a').map do |employee|
+        employees.push(employee.text.strip)
+      end
+
+      review_to_add['employees'] = employees
+
+      # adds other employees if they exist
+      if (other_employees = review_employees.css('span').css('.italic').text.strip) && !other_employees.empty?
+        review_to_add['other_employees'] = other_employees
+      end
+
+      review_to_add
     end
 
     # returns correct rating based on class and text of elemnt passed in.
