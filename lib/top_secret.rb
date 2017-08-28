@@ -6,7 +6,6 @@ require 'pry'
 
 module TopSecret
   class Scrape
-    # rubocop:disable Metrics/AbcSize
     def self.positive(url, pages, limit_to_return)
       reviews = []
       counter = 1
@@ -16,7 +15,11 @@ module TopSecret
         reviews.concat extract(url)
         counter += 1
       end
-      # sorts reviews based on teh overall score and then the date.
+      # sorts reviews based on the overall score and then the date.
+      sort(reviews,limit_to_return)
+    end
+
+    def self.sort(reviews,limit_to_return)
       reviews.sort { |a, b| [a['overall'], Date.parse(a['date'])] <=> [b['overall'], Date.parse(b['date'])] }
       reviews.first(limit_to_return)
     end
